@@ -1,4 +1,5 @@
-﻿using Microsoft.Owin;
+﻿using Models;
+using Microsoft.Owin;
 using Owin;
 
 [assembly: OwinStartupAttribute(typeof(AcmeCorporationWebApp.Startup))]
