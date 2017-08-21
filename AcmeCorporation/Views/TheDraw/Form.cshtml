@@ -4,7 +4,8 @@
     ViewBag.Title = "Form Submission";
 }
 
-<h2>Enter the Acme Corporation's draw<br>to win big prices!</h2>
+<h2>Enter the Acme Corporation's draw<br>to win big prices!</h2><br>
+<h4>@Html.ActionLink("Go to submissions", "Submissions")</h4>
 @if (ViewBag.Message == "true")
 {
     <h3>Submission was successful</h3>
@@ -57,7 +58,7 @@ else if (ViewBag.Message == "false")
         <div class="form-group">
             @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @placeholder = "dd-mm-yyyy" } })
+                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @placeholder = "dd-mm-yyyy",  } })
                 @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -71,7 +72,7 @@ else if (ViewBag.Message == "false")
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Enter The Draw" id="Submit" class="btn btn-default" onclick="location.href='@Url.Action("Validate", "TheDraw")'"/>
+                <input type="submit" value="Enter The Draw" id="Submit" class="btn btn-default"/>
             </div>
         </div>
     </div>

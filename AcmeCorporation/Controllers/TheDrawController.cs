@@ -25,13 +25,6 @@ namespace AcmeCorporationWebApp.Controllers
         }
 
         //
-        //GET: /TheDraw/FormList
-        public ActionResult FormList()
-        {
-            return View("FormList");
-        }
-
-        //
         //GET: /TheDraw/Submit
         [HttpPost]
         public ActionResult Submit(Submission submission)
@@ -75,7 +68,7 @@ namespace AcmeCorporationWebApp.Controllers
             List<Submission> subList = new List<Submission>();
             subList.AddRange(dataAccess.GetSubmissions());
 
-            return View("FormList", subList);
+            return View("Submissions", subList);
         }
     }
 }
