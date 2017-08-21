@@ -1,12 +1,20 @@
-﻿@model Models.FormSub
+﻿@model Models.Submission
 
 @{
     ViewBag.Title = "Form Submission";
 }
 
 <h2>Enter the Acme Corporation's draw<br>to win big prices!</h2>
+@if (ViewBag.Message == "true")
+{
+    <h3>Submission was successful</h3>
+}
+else if (ViewBag.Message == "false")
+{
+    <h3>Product serial number is invalid. Try with a different number</h3>  
+}
 
-@using (Html.BeginForm("Validate", "TheDraw", FormMethod.Post))
+@using (Html.BeginForm("Submit", "TheDraw", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
 
@@ -49,7 +57,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", @placeholder = "dd-mm-yyyy" } })
                 @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -67,24 +75,4 @@
             </div>
         </div>
     </div>
-}  
-
-
-
-
-
-
-    @Html.Label("First name")<br />
-    <input type="text" name="FirstName"><br>
-    @Html.Label("Last name")<br />
-    <input type="text" name="LastName"><br>
-    @Html.Label("Email address")<br />
-    <input type = "email" name = "Email" ><br>
-    @Html.Label("Phone number")<br />
-    <input type = "number" name = "PhoneNumber" maxlength = "8" ><br>
-    @Html.Label("Date of birth")<br />
-    <input type = "text" name = "DateOfBirth" placeholder = "dd-mm-yyyy" min = "10" maxlength = "10" ><br>
-    @Html.Label("Product serial number")<br>
-    <input type = "text" name = "ProductSerialNumber" min = "36" maxlength = "36" ><br><br>
-    <input type="submit" name="sub" value="Enter The Draw"/>
 }

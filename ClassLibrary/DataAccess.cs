@@ -4,30 +4,19 @@ using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Models
 {
-    //public class DataAccessFacade
-    //{
-    //    DataAccess dataAccess = new DataAccess();
-    //    public void SerialToDatabase(Serial PSN)
-    //    {
-    //        dataAccess.SaveSerial(PSN);
-    //    }
-    //    public void FormSubToDatabase(FormSub formSub)
-    //    {
-    //        dataAccess.SaveFormSub(formSub);
-    //    }
-    //}
     public class DataAccess
     {
         List<Serial> serialList = new List<Serial>();
-        string filepath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Serials.csv";
-        
+        List<Submission> subList = new List<Submission>();
 
-        private static string connectionString = @"Data Source =.\SQLEXPRESS;Initial Catalog = master; Integrated Security = True; MultipleActiveResultSets=True";
+        string filepath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + @"\Serials.csv";
+
+        private static string connectionString = @"Data Source=(LocalDB)\v11.0;Integrated Security = True";
+
+        #region Save ProductSerialNumber in Database table
         //public void SaveSerial(Serial PSN)
         //{
         //    using (SqlConnection connection = new SqlConnection(connectionString))
@@ -45,37 +34,56 @@ namespace Models
         //        }
         //        catch (SqlException e)
         //        {
-                    
-        //        }
-        //    }
-        //}
-
-        //public void SaveFormSub(FormSub formSub)
-        //{
-        //    using (SqlConnection connection = new SqlConnection(connectionString))
-        //    {
-        //        try
-        //        {
-        //            connection.Open();
-
-        //            SqlCommand cmd = new SqlCommand("spInsertFormSub", connection);
-        //            cmd.CommandType = CommandType.StoredProcedure;
-        //            cmd.Parameters.Add(new SqlParameter("@FirstName", formSub.FirstName));
-        //            cmd.Parameters.Add(new SqlParameter("@LastName", formSub.LastName));
-        //            cmd.Parameters.Add(new SqlParameter("@Email", formSub.Email));
-        //            cmd.Parameters.Add(new SqlParameter("@PhoneNumber", formSub.PhoneNumber));
-        //            cmd.Parameters.Add(new SqlParameter("@DateOfBirth", formSub.DateOfBirth));
-        //            cmd.Parameters.Add(new SqlParameter("@ProductSerialNumber", formSub.ProductSerialNumber));
-
-        //            cmd.ExecuteNonQuery();
-        //        }
-        //        catch (SqlException e)
-        //        {
 
         //        }
         //    }
         //}
+        #endregion
 
+        //Saves a submission in a FORMSUB table in the local database.
+        public void SaveSubmission(Submission formSub)
+        {
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                try
+                {
+                    connection.Open();
+
+                    SqlCommand cmd = new SqlCommand("spInsertFormSub", connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@FirstName", formSub.FirstName));
+                    cmd.Parameters.Add(new SqlParameter("@LastName", formSub.LastName));
+                    cmd.Parameters.Add(new SqlParameter("@Email", formSub.Email));
+                    cmd.Parameters.Add(new SqlParameter("@PhoneNumber", formSub.PhoneNumber));
+                    cmd.Parameters.Add(new SqlParameter("@DateOfBirth", formSub.DateOfBirth));
+                    cmd.Parameters.Add(new SqlParameter("@ProductSerialNumber", formSub.ProductSerialNumber));
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException e)
+                {
+
+                }
+            }
+        }
+        //Saves changes to the ProductSerialNumbers in the .csv file.
+        public void SavePSNChanges(Serial serial)
+        {
+            serialList.Remove(serialList.Find(x => x.ProductSerialNumber == serial.ProductSerialNumber));
+            serialList.Add(serial);
+
+            using (StreamWriter sw = new StreamWriter(filepath, false))
+            {
+                sw.WriteLine("Product serial numer" + ";" + "Uses" + ";" + "Valid");
+                sw.Flush();
+                foreach (Serial PSN in serialList)
+                {
+                    sw.WriteLine(PSN.ProductSerialNumber + ";" + PSN.Uses.ToString() + ";" + PSN.Valid.ToString());
+                    sw.Flush();
+                }
+            }
+        }
+        //Gets all the ProductSerialNumbers from a .csv file, and returns the PSN that fits the parameter Serial.
         public Serial GetPSN(string PSN)
         {
             var data = File.ReadAllLines(filepath)
@@ -93,21 +101,40 @@ namespace Models
             
             return serialList.Find(x => x.ProductSerialNumber == PSN);
         }
-        public void SaveChanges(Serial serial)
+        //Gets all the submissions from the FORMSUB database table.
+        public List<Submission> GetSubmissions()
         {
-            serialList.Remove(serialList.Find(x => x.ProductSerialNumber == serial.ProductSerialNumber));
-            serialList.Add(serial);
-
-            using (StreamWriter sw = new StreamWriter(filepath, false))
+            using (SqlConnection connection = new SqlConnection(connectionString))
             {
-                sw.WriteLine("Product serial numer" + ";" + "Uses" + ";" + "Valid");
-                sw.Flush();
-                foreach (Serial PSN in serialList)
+                try
                 {
-                    sw.WriteLine(PSN.ProductSerialNumber + ";" + PSN.Uses.ToString() + ";" + PSN.Valid.ToString());
-                    sw.Flush();
+                    connection.Open();
+
+                    SqlCommand cmdGetJobs = new SqlCommand("spGetSubmissions", connection);
+                    cmdGetJobs.CommandType = CommandType.StoredProcedure;
+                    SqlDataReader reader = cmdGetJobs.ExecuteReader();
+
+                    if (reader.HasRows)
+                    {
+                        while (reader.Read())
+                        {
+                            Submission submission = new Submission(reader["FirstName"].ToString(),
+                                reader["LastName"].ToString(),
+                                reader["Email"].ToString(),
+                                reader["PhoneNumber"].ToString(),
+                                reader["DateOfBirth"].ToString(),
+                                reader["ProductSerialNumber"].ToString());
+                            subList.Add(submission);
+                        }
+                    }
+                }
+                catch (SqlException e)
+                {
+                    
                 }
             }
+
+            return subList;
         }
     }
 }

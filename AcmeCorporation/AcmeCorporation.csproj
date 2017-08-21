@@ -242,6 +242,7 @@
     <Content Include="Views\TheDraw\Index.cshtml" />
     <Content Include="Views\TheDraw\Welcome.cshtml" />
     <Content Include="Views\TheDraw\Form.cshtml" />
+    <Content Include="Views\TheDraw\FormList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

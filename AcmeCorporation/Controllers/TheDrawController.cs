@@ -1,21 +1,15 @@
 ﻿using ClassLibrary;
 using Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace AcmeCorporationWebApp.Controllers
 {
     public class TheDrawController : Controller
     {
-        //ProductSerialNumberHandler PSNHandler;
-        DataAccess DA;
-        
-
-        
-
+        ProductSerialNumberHandler PSNHandler;
+        DataAccess dataAccess;
+       
         //
         // GET: /TheDraw/
         public ActionResult Index()
@@ -29,33 +23,59 @@ namespace AcmeCorporationWebApp.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public ActionResult Validate(FormSub submission)
-        {
-            FormSub newSub = submission;
-            ProductSerialNumberHandler PSNHandler = new ProductSerialNumberHandler();
-            //PSNHandler.GenerateSerials();
-            PSNHandler.ValidatePSN("c49f6090-a013-4f77-b430-e85580253d98");
 
-            return View("Form");
-        }
-        public ActionResult GenSerial()
+        //
+        //GET: /TheDraw/FormList
+        public ActionResult FormList()
         {
-            //ProductSerialNumberHandler PSNHandler = new ProductSerialNumberHandler();
-            ////PSNHandler.GenerateSerials();
-            //PSNHandler.ValidatePSN("797841dc-32ee-44f0-9fcb-9d251b8f3909");
+            return View("FormList");
+        }
+
+        //
+        //GET: /TheDraw/Submit
+        [HttpPost]
+        public ActionResult Submit(Submission submission)
+        {
+            if (ModelState.IsValid)
+            {
+                if (Validate(submission.ProductSerialNumber) == "valid")
+                {
+                    ViewBag.Message = "true";
+                    dataAccess = new DataAccess();
+                    dataAccess.SaveSubmission(submission);
+                    Submission newSub = submission;
+                }
+                else
+                {
+                    ViewBag.Message = "false";
+                }
+                ModelState.Clear();
+            }
 
             return View("Form");
         }
 
         //
-        //GET: /HelloWorld/Welcome/
-        public ActionResult Welcome(string name, int numTimes = 1)
+        //GET: /TheDraw/Validate
+        private string Validate(string PSN)
         {
-            ViewBag.Message = "Hello " + name;
-            ViewBag.NumTimes = numTimes;
+            PSNHandler = new ProductSerialNumberHandler();
 
-            return View();
+            string validation;
+
+            validation = PSNHandler.ValidatePSN(PSN);
+            return validation;
+        }
+
+        //
+        //GET: /TheDraw/Submissions
+        public ActionResult Submissions()
+        {
+            dataAccess = new DataAccess();
+            List<Submission> subList = new List<Submission>();
+            subList.AddRange(dataAccess.GetSubmissions());
+
+            return View("FormList", subList);
         }
     }
 }

@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Models.Submission>
+
+@{
+    ViewBag.Title = "Form List";
+}
+
+<h2>List of submission received</h2><br /><br />
+
+<p>
+    @Html.ActionLink("New submission", "Form")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfBirth)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProductSerialNumber)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var sub in ViewData.Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => sub.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => sub.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => sub.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => sub.DateOfBirth)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => sub.ProductSerialNumber)
+            </td>
+            <td>
+                
+            </td>
+        </tr>
+    }
+</table>
+<p>
+    @Html.ActionLink("Next page", "Form")
+</p>

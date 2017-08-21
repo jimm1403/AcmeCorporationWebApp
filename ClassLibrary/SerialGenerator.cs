@@ -6,47 +6,47 @@ namespace Models
 {
     public class SerialGenerator
     {
-        List<string> serialNumbers = new List<string>();
         string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
+        //Generates 100 unique GUIDs and creates a .txt file in the Documents folder, and write the GUIDs in that file.
         public void GenerateSerials()
         {
-            
-            for (int i = 0; i < 100; i++)
+            using (StreamWriter outputFile = new StreamWriter(path + @"\psn.txt", false))
             {
-                Guid serialNr = Guid.NewGuid();
-                serialNumbers.Add(serialNr.ToString());
-            }
-
-            using (StreamWriter outputFile = new StreamWriter(path + @"\psn.txt"))
-            {
-                foreach (var serial in serialNumbers)
+                for (int i = 0; i < 100; i++)
                 {
-                    outputFile.WriteLine(serial);
+                    Guid PSN = Guid.NewGuid();
+                    outputFile.WriteLine(PSN.ToString());
                 }
             }
+            CreateSerials();
         }
 
+        //Reads all the GUIDs from a .txt file in Documents folder, and convert the strings to Serial objects, 
+        //and then writes them in to a .csv file, with the appropriate coloums.
         public void CreateSerials()
         {
+            List<string> serialNumbers = new List<string>();
+
             using (var sr = new StreamReader(path + @"\psn.txt"))
             {
                 for (int i = 0; i < 100; i++)
                 {
-                    if (sr.ReadLine() != null)
+                    string line = sr.ReadLine();
+                    if (line != null)
                     {
-                        serialNumbers.Add(sr.ReadLine());
+                        serialNumbers.Add(line);
                     }
                 }
             }
 
-            using (var sw = new StreamWriter(path + @"\Serials.csv"))
+            using (StreamWriter sw = new StreamWriter(path + @"\Serials.csv", false))
             {
-                sw.WriteLine("Product serial numer" + ";" + "Uses" + ";" + "Valid");
+                sw.WriteLine("Product serial number" + ";" + "Uses" + ";" + "Valid");
                 sw.Flush();
                 foreach (string PSN in serialNumbers)
                 {
-                    sw.WriteLine(PSN + ";" + "0" + ";" + "1");
+                    sw.WriteLine(PSN + ";" + "0" + ";" + "True");
                     sw.Flush();
                 }
             }

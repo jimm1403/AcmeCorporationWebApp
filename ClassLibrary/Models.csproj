@@ -50,11 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess.cs" />
-    <Compile Include="FormSub.cs" />
+    <Compile Include="Submission.cs" />
     <Compile Include="ProductSerialNumberHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialGenerator.cs" />
-    <Compile Include="SerialRepository.cs" />
+    <Compile Include="Serial.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
