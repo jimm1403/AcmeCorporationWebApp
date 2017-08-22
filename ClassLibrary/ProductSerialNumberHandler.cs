@@ -7,8 +7,7 @@ namespace ClassLibrary
         DataAccess dataAccess = new DataAccess();
         Serial currentSerial = new Serial();
         
-        //Bliver kørt hver gang man indsender en form submission og tjekker først om PSN stadig er gyldig og
-        //og ligger 1 til hvor mange gange den er blevet brugt. Hvis den er på 2 uses, gør den koden ugyldig.
+        //Validates the serials send in with the form submissions, to see if it is still valid
         public string ValidatePSN(string PSN)
         {
             if (PSN.Length == 36)
