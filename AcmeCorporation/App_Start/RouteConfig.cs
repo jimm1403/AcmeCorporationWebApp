@@ -16,13 +16,8 @@ namespace AcmeCorporationWebApp
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "TheDraw", action = "Index", id = UrlParameter.Optional }
             );
-
-            routes.MapRoute(
-                name: "genserial", 
-                url: "{controller}/{action}/{name}/{id}"
-                );
         }
     }
 }

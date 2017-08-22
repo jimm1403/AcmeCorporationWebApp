@@ -11,10 +11,12 @@ namespace Models
         string dateOfBirth;
         string productSerialNumber;
 
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         [Required(ErrorMessage = "First name is required")]
         [Display(Name = "First name")]
         public string FirstName { get { return firstName; } set { firstName = value; } }
 
+        [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Use letters only please")]
         [Required(ErrorMessage = "Last name is required")]
         [Display(Name = "Last name")]
         public string LastName { get { return lastName; }set { lastName = value; } }
@@ -23,8 +25,6 @@ namespace Models
         [Display(Name = "Email address")]
         public string Email { get { return email; } set { email = value; } }
         
-        //[DataType(DataType.PhoneNumber)]
-        //[RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Not a valid Phone number")]
         [Required(ErrorMessage = "Phone number is required")]
         [StringLength(8, ErrorMessage = "The {0} must be {2} digits.", MinimumLength = 8)]
         [Display(Name = "Phone number")]
@@ -32,7 +32,8 @@ namespace Models
 
         
         [Display(Name = "Date of birth")]
-        [DisplayFormat(DataFormatString = "{dd-MM-yyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = false)]
+        [StringLength(10, MinimumLength =10, ErrorMessage = "Please write the date like 'dd-mm-yyyy'")]
+        //[DisplayFormat(DataFormatString = "{dd-MM-yyy}", ApplyFormatInEditMode = true, ConvertEmptyStringToNull = false)]
         public string DateOfBirth { get { return dateOfBirth; } set { dateOfBirth = value; } }
 
         [Required(ErrorMessage = "A product serial number is required to enter the draw")]

@@ -8,6 +8,15 @@ namespace Models
     {
         string path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
 
+        //Checks if the Product Serial Number files exist.
+        public void LocalFileCheck()
+        {
+            if (!File.Exists(path + @"\Serials.csv"))
+            {
+                GenerateSerials();
+            }
+        }
+
         //Generates 100 unique GUIDs and creates a .txt file in the Documents folder, and write the GUIDs in that file.
         public void GenerateSerials()
         {

@@ -98,8 +98,16 @@ namespace Models
             );
             
             serialList.AddRange(data);
-            
-            return serialList.Find(x => x.ProductSerialNumber == PSN);
+            if (serialList.Find(x => x.ProductSerialNumber == PSN) == null)
+            {
+                Serial notFound = new Serial();
+                notFound.Valid = false;
+                return notFound;
+            }
+            else
+            {
+                return serialList.Find(x => x.ProductSerialNumber == PSN);
+            }
         }
         //Gets all the submissions from the FORMSUB database table.
         public List<Submission> GetSubmissions()
