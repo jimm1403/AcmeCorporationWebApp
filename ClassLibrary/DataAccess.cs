@@ -19,7 +19,7 @@ namespace Models
         //Check if the ProductSerialNumber for the .txt in MyDocuments are in the database table "SERIAL"
         public void CheckForExistingPSN()
         {
-            string statement = "SELECT COUNT(*) FROM SERIAL";
+            string statement = "SELECT COUNT(*) FROM dbo.SERIALS";
             int count = 0;
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -27,7 +27,7 @@ namespace Models
                 {
                     connection.Open();
                     count = (int)cmdCount.ExecuteScalar();
-                    if (count == 100)
+                    if (count != 100)
                     {
                         SerialGenerator sgen = new SerialGenerator();
                         sgen.CreateSerials();

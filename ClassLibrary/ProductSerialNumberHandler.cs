@@ -1,4 +1,5 @@
 ﻿using Models;
+using System.Collections.Generic;
 
 namespace ClassLibrary
 {
@@ -25,6 +26,35 @@ namespace ClassLibrary
                         currentSerial.Valid = false;
                     }
                     dataAccess.UpdatePSN(currentSerial);
+                    return "valid";
+                }
+            }
+            else
+            {
+                return "invalid";
+            }
+        }
+
+        public string ValidatePsnTEST(string psn, List<Serial> psnList)
+        {
+            
+            if (psn.Length == 36)
+            {
+                Serial psnToValidate = psnList.Find(x => x.ProductSerialNumber == psn);
+                if (psnToValidate.Valid == false)
+                {
+                    return "invalid";
+                }
+                else
+                {
+                    psnToValidate.Uses++;
+                    if (psnToValidate.Uses == 2)
+                    {
+                        psnToValidate.Valid = false;
+                    }
+
+                    psnList.Remove(psnToValidate);
+                    psnList.Add(psnToValidate);
                     return "valid";
                 }
             }

@@ -21,7 +21,7 @@ namespace AcmeCorporationWebApp.Controllers
         // GET: /TheDraw/Form/
         public ActionResult Form()
         {
-            return View();
+            return View("Form");
         }
 
         //
@@ -36,7 +36,7 @@ namespace AcmeCorporationWebApp.Controllers
                     ViewBag.Message = "true";
                     dataAccess = new DataAccess();
                     dataAccess.SaveSubmission(submission);
-                    Submission newSub = submission;
+                    //Submission newSub = submission;
                 }
                 else
                 {
