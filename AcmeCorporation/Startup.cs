@@ -10,8 +10,10 @@ namespace AcmeCorporationWebApp
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-            SerialGenerator SerialGen = new SerialGenerator();
-            SerialGen.LocalFileCheck();
+            DataAccess DA = new DataAccess();
+            SerialGenerator sgen = new SerialGenerator();
+            sgen.LocalFileCheck();
+            DA.CheckForExistingPSN();
         }
     }
 }

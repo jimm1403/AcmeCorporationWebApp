@@ -11,7 +11,7 @@ namespace Models
         //Checks if the Product Serial Number files exist.
         public void LocalFileCheck()
         {
-            if (!File.Exists(path + @"\Serials.csv"))
+            if (!File.Exists(path + @"\psn.txt"))
             {
                 GenerateSerials();
             }
@@ -28,7 +28,6 @@ namespace Models
                     outputFile.WriteLine(PSN.ToString());
                 }
             }
-            CreateSerials();
         }
 
         //Reads all the GUIDs from a .txt file in Documents folder, and convert the strings to Serial objects, 
@@ -48,17 +47,19 @@ namespace Models
                     }
                 }
             }
+            DataAccess DA = new DataAccess();
+            DA.InsertSerial(serialNumbers);
 
-            using (StreamWriter sw = new StreamWriter(path + @"\Serials.csv", false))
-            {
-                sw.WriteLine("Product serial number" + ";" + "Uses" + ";" + "Valid");
-                sw.Flush();
-                foreach (string PSN in serialNumbers)
-                {
-                    sw.WriteLine(PSN + ";" + "0" + ";" + "True");
-                    sw.Flush();
-                }
-            }
+            //using (StreamWriter sw = new StreamWriter(path + @"\Serials.csv", false))
+            //{
+            //    sw.WriteLine("Product serial number" + ";" + "Uses" + ";" + "Valid");
+            //    sw.Flush();
+            //    foreach (string PSN in serialNumbers)
+            //    {
+            //        sw.WriteLine(PSN + ";" + "0" + ";" + "True");
+            //        sw.Flush();
+            //    }
+            //}
         }
     }
 }

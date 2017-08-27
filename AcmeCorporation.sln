@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "ClassLibrary\Models.csproj", "{33FE146A-0D72-4F83-B9D1-9FC67B50B971}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestProject1", "UnitTestProject1\UnitTestProject1.csproj", "{47DF912B-5F01-4AD6-8699-0B4F4B885AF8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAppUnitTest", "UnitTestProject1\WebAppUnitTest.csproj", "{47DF912B-5F01-4AD6-8699-0B4F4B885AF8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcmeCorporation", "AcmeCorporation\AcmeCorporation.csproj", "{1560D506-C416-46F5-845D-4DABD4AA6122}"
 EndProject

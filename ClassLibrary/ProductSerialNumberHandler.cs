@@ -12,7 +12,7 @@ namespace ClassLibrary
         {
             if (PSN.Length == 36)
             {
-                currentSerial = dataAccess.GetPSN(PSN);
+                currentSerial = dataAccess.GetPSNDB(PSN);
                 if (currentSerial.Valid == false)
                 {
                     return "invalid";
@@ -24,7 +24,7 @@ namespace ClassLibrary
                     {
                         currentSerial.Valid = false;
                     }
-                    dataAccess.SavePSNChanges(currentSerial);
+                    dataAccess.UpdatePSN(currentSerial);
                     return "valid";
                 }
             }
