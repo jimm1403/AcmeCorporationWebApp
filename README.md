@@ -12,3 +12,6 @@ When the application is running, you will have a front page, where you can choos
 Form is where you can give all the info with a PSN, and see if the key is still valid. The key can be used 2 times, and after 2 uses
 the key will be invalid.
 In submissions you can see all the submissions, that people have submitted via the form.
+
+Remember if you delete the psn.txt file, the application will create a 100 new GUIDs, that will not match the ones in the database.
+You will then need to empty the SERIAL table in the database, and run the application again.
